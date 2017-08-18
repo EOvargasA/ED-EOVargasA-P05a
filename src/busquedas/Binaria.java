@@ -9,7 +9,7 @@ package busquedas;
  *
  * @author Osiris
  */
-public class Binaria extends Fetch {
+public class Binaria extends Fetch implements Ordenamiento{
 
     @Override
     int fetch(int n) {
@@ -32,5 +32,21 @@ public class Binaria extends Fetch {
             }
         }while(exist == true);
         return -1;
+    }
+
+    @Override
+    public void ordenamientos(int[] v) {
+       int menor, auxiliar;
+        for (int i = 0; i < v.length; i++){
+            menor = i;
+            for (int j = i + 1; i < v.length; i++){
+                if (v[j] < v[menor]){
+                    menor = j;
+                }
+            }
+            auxiliar = v[i];
+            v[i] = v[menor];
+            v[menor] = auxiliar;
+        }
     }
 }
