@@ -1,0 +1,187 @@
+//
+//  AppDelegate.swift
+//  ED-EOVargasA-A03
+//
+//  Created by Tecnológico de Monterrey Campus Tampico on 14/08/17.
+//  Copyright © 2017 Tecnológico de Monterrey Campus Tampico. All rights reserved.
+//
+
+import Cocoa
+
+@NSApplicationMain
+class AppDelegate: NSObject, NSApplicationDelegate {
+    let randomNum:UInt32 = arc4random_uniform(100)
+    
+    class Fetch {
+        var vector : [Int] = []
+        
+        func setV (a : [Int]){
+            self.vector = a
+        }
+        
+        func getV()->[Int]{
+            return self.vector
+        }
+        
+        func showV(){
+            print("[")
+            for n in 0 ... self.vector.count - 1{
+                print(self.vector[n])
+                if n < self.vector.count - 1{
+                    print(",")
+                }
+            }
+            print("]")
+        }
+        
+        func showF (a : Int){
+            print ("el numero esta en la posicion \(a + 1)")
+        }
+        
+        func randomV(n : Int)->[Int]{
+            var v : [Int] = []
+            for a in 0 ... n{
+                v.append(Int(arc4random_uniform(100)))
+            }
+            return v
+        }
+    }
+    
+    class Secuencial : Fetch{
+        func fetch (n : Int)->Int{
+            for a in 0 ... self.vector.count - 1{
+                if self.vector[a] == n{
+                    return a
+                }
+            }
+            return -1
+        }
+    }
+    
+    class Binaria : Fetch {
+        func fetch (n : Int)->Int{
+            var start: Int = 0
+            var end : Int = self.vector.count - 1
+            var middle : Int
+            var exist : Bool
+            repeat{
+                exist = false
+                middle = (start + end)/2
+                if n == self.vector[middle]{
+                    return middle
+                }
+                if n >= self.vector[start] && n <= self.vector[middle]{
+                    exist = true
+                    end = middle - 1
+                }else{
+                    if n >= self.vector[middle] && n <= self.vector[end]{
+                        exist = true
+                        start = middle + 1
+                    }
+                }
+            }while exist == true
+            return -1
+        }
+		func ordenamientos (v : [Int]){
+			var menor : Int
+			var auxiliar : Int
+			for a in 0 ... v.count - 1{
+				menor = a 
+				for b in a+1 ... v.count - 1{
+					if v[b] < v[menor]{
+						menor = b
+					}
+				}
+				auxiliar = v[a]
+				v[a] = v[menor]
+				v[menor] = auxiliar
+			}
+		}
+		func insercion (v : [Int]){
+			var aux : Int
+			var j : Int
+			for i in 0 ... v.count - 1{
+				aux = v[i]
+				j = i - 1
+				while j >= 0 && v[j] > aux{
+					v[j+1] = v[j]
+					j--
+				}
+				v[j+1] = aux
+			}
+			return v
+		}
+		func Mergesort (v : [Int], i : Int, f : Int){
+			if i < f{
+				var m : Int
+				m = (i + f)/2
+				Mergesort(v,i,m)
+				Mergesort(v,m+1,f)
+				Merge(v,i,m,f)
+			}
+			setV(v)
+		}
+		func Merge (arr : [Int], l : Int, m : Int, r : Int){
+			n1 : Int
+			n2 : Int
+			n1 = m - l + 1
+			n2 = r - m
+			L : [Int]
+			R : [Int]
+			for i in 0 ... n1 - 1{
+				L[i] = arr[l + i]
+			}
+			for j in 0 ... n2 - 1{
+				arr[m + 1+ j]
+			}
+			i : Int
+			j : Int
+			k : Int
+			i = 0
+			j = 0
+			k = l
+			while i < n1 && j < n2{
+				if L[i] <= R[j]{
+					arr[k] = L[i]
+					i = i + 1
+				}else{
+					arr[k] = R[j]
+					j = j + 1
+				}
+				k = k + 1
+        	}
+			while i < n1{
+				arr[k] = L[i]
+				i = i + 1
+				k = k + 1
+			}
+			while (j < n2){
+				arr[k] = R[j]
+				j = j + 1
+				k = k + 1
+			}
+		}
+		func Burbuja (v : [Int]){
+			auxiliar : Int
+			for i in 0 ... v.count - 1{
+				for j in 0 ... v.count - 1{
+					if v[j] > v[j + 1]{
+						auxiliar = v[j]
+						v[j] = v[j + 1]
+						v[j + 1] = auxiliar
+					}
+				}
+			}
+		}
+    }
+    
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // Insert code here to initialize your application
+    }
+
+    func applicationWillTerminate(_ aNotification: Notification) {
+        // Insert code here to tear down your application
+    }
+
+
+}
